@@ -1,0 +1,45 @@
+$primary: #6f4a8e;
+$secondary: #221f3b;
+$dark: #050505;
+$light: #ebebeb;
+
+* {
+    font-family: "Nunito", "sans-serif";
+}
+
+header {
+    background: $primary;
+    padding: 1em 0;
+
+    a {
+        color: $light;
+        text-decoration: none;
+    }
+
+    a.logo {
+        font-weight: bold;
+        font-size: 25px;
+        padding: 10px;
+        margin: 0 0 0 3%;
+    }
+
+    nav {
+        margin: 0 0 0 0;
+        float: right;
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            display: flex;
+
+            li a {
+                padding: 1em;
+                font-size: 21px;
+
+                &:hover {
+                    background: lighten($secondary, 1%);
+                }
+            }
+        }
+    }
+}
