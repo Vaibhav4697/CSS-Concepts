@@ -1,0 +1,15 @@
+<div class="background-paragraph">
+    <a class="button" (click)="run(iFrame)">Run >></a>
+    <input type="file" class="button" (change)="getFileData($event.target.files)">
+</div>
+
+<div class="online-editor">
+    <div class="code-editor">
+        <textarea id="code-area" cols="30" rows="10" class="code-area" wrap="hard" [(ngModel)]="code"
+            (keydown.Tab)="enableTabSpacing($event, textArea)" #textArea></textarea>
+    </div>
+
+    <div class="output-browser">
+        <iframe frameborder="0" class="output-frame" #iFrame></iframe>
+    </div>
+</div>

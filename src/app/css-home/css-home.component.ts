@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { OnlineEditorComponent } from '../online-editor/online-editor.component';
 
 @Component({
   selector: 'app-css-home',
@@ -10,6 +11,10 @@ export class CssHomeComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  setFileName() {
+    OnlineEditorComponent.codeFileName = "css-first-example.html";
   }
 
 }
