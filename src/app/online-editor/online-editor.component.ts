@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ifError } from 'assert';
+import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 
 declare const Buffer;
 
@@ -12,11 +13,12 @@ declare const Buffer;
 export class OnlineEditorComponent implements OnInit {
 
   code: string = "";
+  iFrameSource: SafeResourceUrl;
 
   public static codeFileName: string = "";
   private codeFilePath: string = "./assets/source-code/";
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, public sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     if (OnlineEditorComponent.codeFileName == "") {
@@ -26,7 +28,7 @@ export class OnlineEditorComponent implements OnInit {
       let self = this;
       this.getHtmlCode(this.codeFilePath + OnlineEditorComponent.codeFileName).subscribe(data => {
         self.code = data.toString();
-        console.log(self.code);
+        self.run();
       });
     }
   }
@@ -40,17 +42,17 @@ export class OnlineEditorComponent implements OnInit {
     event.stopPropagation();
   }
 
-  run(iFrame): void {
-    iFrame.src = "data:text/html;charset=utf-8," + encodeURI(this.code);
+  run(): void {
+    this.iFrameSource = this.sanitizer.bypassSecurityTrustResourceUrl("data:text/html;charset=utf-8," + encodeURI(this.code));
   }
 
   getFileData(fileList: FileList): void {
     let file = fileList[0];
     let fileReader: FileReader = new FileReader();
     let self = this;
-    fileReader.onloadend = function (event: Event) {
-      console.log(fileReader.result);
+    fileReader.onloadend = function (event: Event){
       self.code = typeof fileReader.result === "string" ? fileReader.result : Buffer.from(fileReader.result).toString();
+      self.run();
     }
     fileReader.readAsText(file);
   }
